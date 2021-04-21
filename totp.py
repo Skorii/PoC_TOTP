@@ -3,7 +3,6 @@
 import base64
 import hmac
 import struct
-import time
 
 
 key = 'YNZEDHN2EKEC3EUN7PPHNXIJCPNZDXR3'
