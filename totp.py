@@ -5,7 +5,7 @@ import hmac
 import struct
 
 
-key = 'YNZEDHN2EKEC3EUN7PPHNXIJCPNZDXR3'
+key = 'YNZEDHN2EKEC3EUN7PPHNXIJCPNZDXR3' # Clé secrète encodée en Base32
 
 # 1.	Il faut commencer par convertir la date de la démo en secondes. Ce nombre corresponds au
 # nombre de seconde écoulée depuis l’Epoch.
