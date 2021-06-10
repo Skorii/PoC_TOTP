@@ -4,6 +4,10 @@ import base64
 import hmac
 import struct
 
+ALGO = 'sha1'
+PERIOD = 30
+DIGIT = 6
+
 key = 'YNZEDHN2EKEC3EUN7PPHNXIJCPNZDXR3' # Clé secrète encodée en Base32
 
 # 1.	Il faut commencer par convertir la date de la démo en secondes. Ce nombre corresponds au
@@ -11,7 +15,7 @@ key = 'YNZEDHN2EKEC3EUN7PPHNXIJCPNZDXR3' # Clé secrète encodée en Base32
 seconds = 1618933182 # Nombre de secondes entre l'Epoch et mardi 20/04/21 à 17:39:42
 
 # 2.	On divise ce nombre par 30 pour obtenir le nombre de périodes de 30 secondes depuis l’Epoch.
-counter = int(seconds / 30)
+counter = int(seconds / PERIOD)
 
 # 3.	Il faut maintenant convertir le compteur en bytes(8). Cette valeur sera appelée message.
 message = struct.pack('>Q', counter)
@@ -21,7 +25,7 @@ b32_key = base64.b32decode(key)
 
 # 5.	Maintenant que la clé et le compteur sont en bytes et grâce à un algorithme de hachage,
 # on peut en récupérer un HMAC.
-mac = hmac.new(b32_key, message, 'sha1').digest()
+mac = hmac.new(b32_key, message, ALGO).digest()
 
 # 6.	On peut récupérer la dernière valeur du HMAC, cette valeur sera appelée l’offset.
 offset = mac[-1] & 0xf
@@ -35,6 +39,6 @@ long_code = struct.unpack('>L', mac[offset:offset + 4])[0] & 0x7fffffff
 
 # 8.	Et voici la dernière étape. De ce long code, il suffit de récupérer les 6 dernier chiffres,
 # qui donneront le code TOTP.
-code = long_code % 10 ** 6
+code = long_code % 10 ** DIGIT
 
 print(code)
